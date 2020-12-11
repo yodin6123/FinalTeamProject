@@ -1,6 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<% String ctxPath = request.getContextPath(); %>
+
+<%-- 지은 추가한 부분 시작--%>
+<script src="<%= request.getContextPath()%>/resources/plugins/bower_components/jquery/dist/jquery.min.js"></script>	
+<script type="text/javascript">
+	
+	function goTrashClear() {
+		// 휴지통 비우기 기능
+		
+		location.href = "<%= ctxPath%>/groupware/jieun/note/trashClear.os";
+	}
+
+</script>	
+<%-- 지은 추가한 부분 끝--%>
+
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
             <div class="navbar-header"> <a class="navbar-toggle hidden-sm hidden-md hidden-lg "
@@ -57,6 +72,30 @@
                         <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
                                 aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
                     </li>
+                    <%-- 지은 header 추가 시작 --%>
+                    <li>
+                        <a href="blank.html" class="waves-effect" id="note">
+	                        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
+	                        <span class="hide-menu">쪽지</span>
+	                        <span class="fa arrow"></span>
+                        </a>			         	
+                        <ul class="nav nav-third-level">
+			            	<li><a href="/groupware/jieun/note/write.os">쪽지쓰기</a></li>
+			            	<li><a href="/groupware/jieun/note/sendList.os">보낸쪽지함</a></li>
+			            	<li><a href="/groupware/jieun/note/receiveList.os">받은쪽지함</a></li>
+			            	<li><a href="/groupware/jieun/note/importantList.os">중요쪽지함</a></li>
+			            	<li><a href="/groupware/jieun/note/tempList.os">임시보관함</a></li>
+			            	<li><a href="/groupware/jieun/note/reservationList.os">예약쪽지함</a></li>
+			            	<li>
+			            		<a style="width: 130px; display:inline-block; " href="/groupware/jieun/note/trash.os">휴지통
+			            		</a>
+		            			<button type="button" onclick="goTrashClear();" style="width: 0px; display:inline-block; background-color: #516673; border: 0; margin-left: 40px; color:#ffffff;" data-toggle="tooltip" data-placement="top" title="비우기">
+		            				<i class= "fa fa-trash-o fa-fw" aria-hidden="true"></i>
+		            			</button>
+			            	</li>
+                        </ul>
+                    </li>
+                    <%-- 지은 header 추가 끝 --%> 
                     <li>
                         <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw"
                                 aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
