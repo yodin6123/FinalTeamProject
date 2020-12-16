@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yongjin">
+
+	<!-- === 로그인 처리하기 === -->
+	<select id="loginEnd" parameterType="HashMap" resultType="com.spring.groupware.yongjin.model.EmployeeVO">
+		select emp_no, dept_name, position_name, board_grant_name, site_grant_name
+		     , emp_name, emp_pwd, corp_phone, postcode, address, detail_address, extra_address, mobile, email, firstday, photo_route, photo_name, status
+		from tbl_employee E
+		left join tbl_dept_name D
+		on E.fk_dept_no = D.dept_no
+		left join tbl_position_sort P
+		on E.fk_position_no = P.position_no
+		left join tbl_board_grant B
+		on E.fk_board_grant_no = B.board_grant_no
+		left join tbl_site_grant S
+		on E.fk_site_grant_no = S.site_grant_no
+		where emp_no = #{emp_no} and emp_pwd = #{emp_pwd}
+	</select>
+	
+	
+	<!-- === 비밀번호 찾기 결과 보여주기 === -->
+	<select id="pwdFindEnd" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_employee
+		where emp_no = #{emp_no} and email = #{email}
+	</select>
+	
+	
+	<!-- === 임시 비밀번호를 DB 에 업데이트하기 === -->
+	<update id="certPassword" parameterType="HashMap">
+		update tbl_employee set emp_pwd = #{certPassword}
+		where emp_no = #{emp_no}
+	</update>
+
+</mapper>
