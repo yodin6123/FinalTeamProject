@@ -57,7 +57,7 @@
         <!-- Left navbar-header end -->
         <!-- Page Content -->
         <div id="page-wrapper">
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding: 0; margin: 0;">
 				<tiles:insertAttribute name="content" />
             </div>
             <!-- /.container-fluid -->
