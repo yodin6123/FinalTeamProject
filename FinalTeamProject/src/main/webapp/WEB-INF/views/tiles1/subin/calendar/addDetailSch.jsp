@@ -325,7 +325,7 @@
 	            // var fk_dept_noVal = sessionStorage.getItem("fk_dept_no");
 	            
 	            $.ajax({ 
-	               url:"<%= request.getContextPath() %>/jieun/note/writeAddAddress.os",
+	               url:"<%= request.getContextPath() %>/subin/writeAddAddress.os",
 	               // data: {"fk_dept_no" : fk_dept_noVal},
 	               data: {"fk_dept_no" : fk_dept_no},
 	               dataType:"json",
@@ -381,7 +381,7 @@
 	         }
 	         
 	           $.ajax({
-	               url : '<%= request.getContextPath() %>/jieun/note/writeAddressSearch.os',
+	               url : '<%= request.getContextPath() %>/subin/writeAddressSearch.os',
 	               data : {"searchWord" : searchWord},
 	               dataType : 'JSON',
 	               success : function(json){

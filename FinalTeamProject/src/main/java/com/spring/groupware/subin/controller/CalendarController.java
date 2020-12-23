@@ -40,7 +40,7 @@ public class CalendarController {
 	///////////////////////지은언니 주소록 Modal////////////////////////////////
 	// === 쪽지함의 쪽지쓰기의 주소록에서 조직 클릭한 경우(ajax) === //
 	   @ResponseBody
-	   @RequestMapping(value="/jieun/note/writeAddAddress.os", produces="text/plain; charset=UTF-8")
+	   @RequestMapping(value="/subin/writeAddAddress.os", produces="text/plain; charset=UTF-8")
 	   public String writeAddAddress(HttpServletRequest request) { 
 	      
 	      String fk_dept_no = request.getParameter("fk_dept_no");
@@ -74,7 +74,7 @@ public class CalendarController {
 	   
 	   // === 쪽지쓰기의 주소록 내에서 검색(ajax)  === //
 	   @ResponseBody
-	   @RequestMapping(value="/jieun/note/writeAddressSearch.os", produces="text/plain; charset=UTF-8")
+	   @RequestMapping(value="/subin/writeAddressSearch.os", produces="text/plain; charset=UTF-8")
 	   public String writeAddressSearch(HttpServletRequest request) {
 	      
 	      String searchWord = request.getParameter("searchWord");

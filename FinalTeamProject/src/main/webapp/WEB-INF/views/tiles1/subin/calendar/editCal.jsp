@@ -345,7 +345,7 @@
 <body class="stop-dragging">
 
 	<div class="titleBox">
-		<h2>나의 예약 목록</h2>
+		<h2>내 캘린더 관리</h2>
 	</div>
 	
 	<div class="container">   
@@ -357,16 +357,15 @@
 	  	<br><br><button type="button" class="btn btn-info" onclick="delCal()">삭제</button>
 	  </div>  
 	  
-	  <table class="table rsv_list_table">
+	  <table class="table edit_cal_table">
 	    <thead>
 	      <tr>
-	        <th class="col-sm-2">분류</th>
-	        <th class="col-sm-5">자원명</th>
-	        <th class="col-sm-5">예약 시간</th>
-	        <th class="col-sm-2"></th>
+	        <th class="col-sm-1"><input type="checkbox" class="checkAll" /></th>
+	        <th class="col-sm-9">캘린더</th>
+	        <th class="col-sm-2">색상</th>
 	      </tr>
 	    </thead>
-	    <tbody class="rsvList">
+	    <tbody class="calList">
 	      
 	    </tbody>
 	  </table>
