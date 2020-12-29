@@ -13,4 +13,7 @@ public interface InterMainDAO {
 	// 임시 비밀번호를 DB 에 업데이트
 	int certPassword(Map<String, String> paraMap);
 
+	// 접속기록 테이블에 입력하기
+	int insertLoginHistory(Map<String, String> paraMap);
+
 }

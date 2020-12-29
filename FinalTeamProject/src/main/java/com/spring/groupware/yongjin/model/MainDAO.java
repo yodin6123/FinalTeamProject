@@ -37,4 +37,12 @@ public class MainDAO implements InterMainDAO {
 		return result;
 	}// end of public int certPassword(String certPassword) {}----------------------
 
+
+	// === 접속기록 테이블에 입력하기 === //
+	@Override
+	public int insertLoginHistory(Map<String, String> paraMap) {
+		int result = sqlsession.insert("yongjin.insertLoginHistory", paraMap);
+		return result;
+	}// end of public int insertLoginHistory(Map<String, String> paraMap) {}---------------------
+
 }

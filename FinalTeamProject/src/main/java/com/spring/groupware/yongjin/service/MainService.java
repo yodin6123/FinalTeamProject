@@ -19,6 +19,12 @@ public class MainService implements InterMainService {
 	@Override
 	public EmployeeVO loginEnd(Map<String, String> paraMap) {
 		EmployeeVO empvo = dao.loginEnd(paraMap);
+		
+		if(empvo != null) {
+			// 접속기록 테이블에 입력하기
+			dao.insertLoginHistory(paraMap);
+		}// end of if(empvo != null) {
+		
 		return empvo;
 	}// end of public EmployeeVO loginEnd(Map<String, String> paraMap) {}---------------------
 

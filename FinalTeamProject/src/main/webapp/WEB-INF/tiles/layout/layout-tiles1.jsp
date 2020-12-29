@@ -44,6 +44,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -90,6 +92,7 @@
     <script src="<%= request.getContextPath()%>/resources/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+        	/*
             $.toast({
                 heading: 'Welcome to Pixel admin',
                 text: 'Use the predefined ones, or specify a custom position object.',
@@ -99,6 +102,7 @@
                 hideAfter: 3500,
                 stack: 6
             })
+            */
         });
     </script>
    

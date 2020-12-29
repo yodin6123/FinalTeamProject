@@ -48,9 +48,12 @@ public class MainController {
 		String emp_no = request.getParameter("emp_no");
 		String emp_pwd = request.getParameter("emp_pwd");
 		
+		String emp_ip = request.getRemoteAddr();  // 접속아이피
+		
 		Map<String, String> paraMap = new HashMap<String, String>();
 		paraMap.put("emp_no", emp_no);
 		paraMap.put("emp_pwd", Sha256.encrypt(emp_pwd));
+		paraMap.put("emp_ip", emp_ip);
 		
 		EmployeeVO loginemp = service.loginEnd(paraMap);
 		
