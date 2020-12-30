@@ -1,5 +1,6 @@
 package com.spring.groupware.yongjin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.spring.groupware.yongjin.model.EmployeeVO;
@@ -14,5 +15,10 @@ public interface InterMainService {
 
 	// 임시 비밀번호를 DB 에 업데이트하기
 	int certPassword(Map<String, String> paraMap);
+
+	// 조직도 불러오기
+	List<EmployeeVO> empList();
+	// 부서 불러오기
+	List<String> deptList();
 
 }

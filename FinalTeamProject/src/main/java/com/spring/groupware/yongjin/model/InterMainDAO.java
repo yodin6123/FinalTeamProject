@@ -1,5 +1,6 @@
 package com.spring.groupware.yongjin.model;
 
+import java.util.List;
 import java.util.Map;
 
 public interface InterMainDAO {
@@ -15,5 +16,10 @@ public interface InterMainDAO {
 
 	// 접속기록 테이블에 입력하기
 	int insertLoginHistory(Map<String, String> paraMap);
+
+	// 조직도 불러오기
+	List<EmployeeVO> empList();
+	// 부서 불러오기
+	List<String> deptList();
 
 }

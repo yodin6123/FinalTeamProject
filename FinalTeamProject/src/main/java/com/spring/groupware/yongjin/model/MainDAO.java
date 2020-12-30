@@ -1,5 +1,6 @@
 package com.spring.groupware.yongjin.model;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -44,5 +45,20 @@ public class MainDAO implements InterMainDAO {
 		int result = sqlsession.insert("yongjin.insertLoginHistory", paraMap);
 		return result;
 	}// end of public int insertLoginHistory(Map<String, String> paraMap) {}---------------------
+
+
+	// === 조직도 불러오기 === //
+	@Override
+	public List<EmployeeVO> empList() {
+		List<EmployeeVO> empList = sqlsession.selectList("yongjin.empList");
+		return empList;
+	}// end of public List<EmployeeVO> empList() {}-----------------------
+	
+	// === 조직도 불러오기 === //
+	@Override
+	public List<String> deptList() {
+		List<String> deptList = sqlsession.selectList("yongjin.deptList");
+		return deptList;
+	}// end of public List<EmployeeVO> empList() {}-----------------------
 
 }

@@ -1,5 +1,6 @@
 package com.spring.groupware.yongjin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,20 @@ public class MainService implements InterMainService {
 		int result = dao.certPassword(paraMap);
 		return result;
 	}// end of public int certPassword(String certPassword) {}-------------------------
+
+
+	// === 조직도 불러오기 === //
+	@Override
+	public List<EmployeeVO> empList() {
+		List<EmployeeVO> empList = dao.empList();
+		return empList;
+	}// end of public List<EmployeeVO> empList() {}---------------------
+	
+	// === 부서 불러오기 === //
+	@Override
+	public List<String> deptList() {
+		List<String> deptList = dao.deptList();
+		return deptList;
+	}// end of public List<EmployeeVO> empList() {}---------------------
 
 }

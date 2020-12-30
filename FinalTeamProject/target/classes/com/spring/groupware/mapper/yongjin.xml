@@ -277,9 +277,43 @@
 	
 	<!-- 로그인 기록 불러오기 -->
 	<select id="getLoginHistory" parameterType="String" resultType="com.spring.groupware.yongjin.model.LoginHistoryVO">
-		select fk_emp_no, emp_ip, to_char(logindate, 'yyyy-mm-dd hh24:mi:ss') AS logindate
-		from tbl_loginhistory
-		where fk_emp_no = #{fk_emp_no}
+		select fk_emp_no, emp_ip, logindate
+		from
+		(
+			select row_number() over(order by logindate desc) AS rno
+				 , fk_emp_no, emp_ip, to_char(logindate, 'yyyy-mm-dd hh24:mi:ss') AS logindate
+			from tbl_loginhistory
+			where fk_emp_no = #{fk_emp_no}
+		) A
+		where rno between 1 and 10
+	</select>
+	
+	
+	<!-- 조직도 불러오기 -->
+	<select id="empList" resultType="com.spring.groupware.yongjin.model.EmployeeVO">
+		select emp_no, fk_dept_no, dept_name, position_name, board_grant_name, site_grant_name
+		     , emp_name, corp_phone, postcode, address, detail_address, extra_address, mobile, email, firstday, photo_route, photo_name, status
+		from
+		(
+			select row_number() over(order by emp_name) AS rno
+				 , emp_no, fk_dept_no, dept_name, position_name, board_grant_name, site_grant_name
+			     , emp_name, corp_phone, postcode, address, detail_address, extra_address, mobile, email, firstday, photo_route, photo_name, status
+			from tbl_employee E
+			left join tbl_dept_name D
+			on E.fk_dept_no = D.dept_no
+			left join tbl_position_sort P
+			on E.fk_position_no = P.position_no
+			left join tbl_board_grant B
+			on E.fk_board_grant_no = B.board_grant_no
+			left join tbl_site_grant S
+			on E.fk_site_grant_no = S.site_grant_no
+		) V
+	</select>
+	
+	<!-- 부서 불러오기 -->
+	<select id="deptList" resultType="String">
+		select dept_name
+		from tbl_dept_name
 	</select>
 
 </mapper>

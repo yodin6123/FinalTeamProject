@@ -78,6 +78,13 @@ public class MainController {
 				HttpSession session = request.getSession();
 				session.setAttribute("loginemp", loginemp);
 				
+				// 조직도 불러오기
+				List<EmployeeVO> empList = service.empList();
+				// 부서 불러오기
+				List<String> deptList = service.deptList();
+				
+				mav.addObject("empList", empList);
+				mav.addObject("deptList", deptList);
 				mav.setViewName("home.tiles1");
 			}// end of if(loginemp.getStatus() == 0) {}--------------------------
 			
