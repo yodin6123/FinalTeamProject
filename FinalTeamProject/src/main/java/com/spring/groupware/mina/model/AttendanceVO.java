@@ -31,6 +31,7 @@ public class AttendanceVO {
 	
 	// select 용
 	private String emp_name;
+	private String dept_name;
 	
 	private EmployeeVO empvo;
 	private EmployeeVO midapprvo;
@@ -241,6 +242,12 @@ public class AttendanceVO {
 	}
 	public void setAttach(MultipartFile attach) {
 		this.attach = attach;
+	}
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
 	}
 	
 }
