@@ -13,7 +13,7 @@
   	 
   }
   
-  #trash {
+  #trash, #readReceive, #btnReload, #btnOrder {
   	 border: 0;
   	 background-color: white; 
   }
@@ -27,7 +27,7 @@
   	 margin-right: 15px; 
   }
   
-  #trash:hover {
+  #trash:hover, #readReceive:hover, #btnReload:hover, #btnOrder:hover {
   	 background-color: #EEEEEE;
   }
 
@@ -43,76 +43,308 @@
   
 </style>
 
+<script type="text/javascript">
 
-<div class="row bg-title">
+	$(document).ready(function(){
+		
+		// ===== 새로고침 기능 ===== // 
+		$("li#fiveMin").click(function(){
+			
+			alert("하하하하 5분 새로고침");
+			window.setTimeout('window.location.reload()', 300000); 
+		});
+		
+		$("li#tenMin").click(function(){
+			
+			alert("하하하하 10분 새로고침"); 
+			window.setTimeout('window.location.reload()', 600000);
+			
+		});
+		
+		$("li#fifteenMin").click(function(){
+			
+			alert("하하하하 15분 새로고침");
+			window.setTimeout('window.location.reload()', 900000);
+			
+		});
+		
+		// ===== 정렬 기능 ===== //
+		$("ul#orderList li").click(function(){
+			
+			alert("클릭한 곳의 id 값은 ? " + $(this).attr('id')); 
+			
+			var orderType = $(this).attr('id');
+			
+			location.href="<%=request.getContextPath() %>/jieun/note/tempList.os?orderType="+orderType;
+			
+			
+		});		
+		
+		// 전체선택 및 해제
+		$("input#checkAll").click(function(){
+			if($(this).prop("checked")) {
+				$("input[name='chkBox']").prop("checked", true);				
+			}
+			else {
+				$("input[name='chkBox']").prop("checked", false);
+			}
+		});		
+		
+		/*
+		var selectType = "note_title";
+		
+		// 검색어 타입 value 값 구하기 
+		
+		$("select#searchType").change(function(){
+			
+			goNoteSearch();
+			
+			// selectType = $(this).val();
+			// alert("선택한 타입은 ==> " + selectType);
+			
+		});		
+		*/
+		
+		// ===== 검색타입과 검색어 유지 시키기 ===== //
+		
+	    if(${searchWord != null} ) { // 또는 if(${not empty paraMap}) 도 가능
+		    // 넘어온 paraMap이 null이 아니라면(값이 있다면)
+		    $("select#searchType").val("${searchType}");
+		    $("input#searchWord").val("${searchWord}");
+	    }
+	    if(${searchWord == null}) {
+		    $("select#searchType").val("note_title");
+		    $("input#searchWord").val("");
+	    }
+	    
+	    // ===== 페이징 처리 ===== //
+	    $("select#sizePerPage").change(function(){
+	    	
+	    	// 한 페이지에 몇개의 리스트를 보여줄건지의 값을 넘기자
+	    	
+			alert("클릭한 곳의 value 값은 ? " + $("#sizePerPage option:selected").val()); 
+			
+			var sizePerPage = $("#sizePerPage option:selected").val();
+			
+			<%-- location.href="<%=request.getContextPath() %>/jieun/note/sendList.os?sizePerPage="+sizePerPage; --%>
+			
+			var frm = document.pagingFrm;
+			frm.method = "GET";
+		    frm.action = "<%= ctxPath%>/jieun/note/tempList.os";
+		    frm.submit();				
+	    	
+	    });	
+		
+	});
+	
+	// ===== 검색 버튼 눌렀을 경우 ===== //
+	function goNoteSearch() {
+		
+		var searchWord = $("input#searchWord").val().trim();
+		if(searchWord == "") {
+			alert("검색어를 입력하세요!");
+			return false;
+		}
+		
+		var frm = document.goTempListSelectFrm;
+		frm.method = "GET";
+		// frm.selectType.value = selectType;
+		// frm.searchWord.value = searchWord;
+	    frm.action = "<%= ctxPath%>/jieun/note/tempList.os";
+	    frm.submit();		
+	    
+	}	
+
+	// 임시보관함에서 제목을 클릭하면 해당 쪽지의 쪽지번호를 가지고 쪽지쓰기로 넘어간다. 
+	function goWriteModify(note_no) {
+		
+		location.href="<%=request.getContextPath() %>/jieun/note/writeModify.os?note_no="+note_no;
+	}
+	
+	// ===== 읽음 버튼 눌렀을때 ===== // 
+	function goReadReceive() {
+		
+		// 체크된 갯수 세기
+		var chkCnt = $("input[name='chkBox']:checked").length;
+		alert("체크된 갯수는 ??? " + chkCnt);
+		
+		// 배열에 체크된 행의 note_no를 넣자
+		var arrChk = new Array();
+		
+		$("input[name='chkBox']:checked").each(function(){
+			
+			var note_no = $(this).attr('id');
+			alert("note_no ==> " + note_no);
+			
+			arrChk.push(note_no);
+			
+		});		
+		
+		if(chkCnt == 0) {
+			alert("선택된 쪽지가 없습니다!");
+		}
+		else{
+			
+			$.ajax({
+		                url : "<%=request.getContextPath() %>/jieun/note/changeReadStatus.os",
+		                type: "GET",
+		                data: {"str_note_no" : JSON.stringify(arrChk),  // 배열을 문자열로 바꿔서 Controller 에 전달하기
+		                	   "cnt": chkCnt},
+		                dataType:"JSON",
+		                success: function(json){
+		                    
+		     			    var n = json.n;
+		                	
+		                	if(n == 1) {
+		                		console.log("읽음 상태 변경 성공!!");
+		                	}
+		                	
+		                },
+				        error: function(request, status, error){
+						       alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+						}
+				});
+        }					
+		
+	}
+	
+	// ===== 삭제 버튼 눌렀을때  ===== //
+	function goNoteTempTrashDelete() { // 휴지통으로 이동
+		
+		// 체크된 갯수 세기
+		var chkCnt = $("input[name='chkBox']:checked").length;
+		// alert("체크된 갯수는 ??? " + chkCnt);
+		
+		// 배열에 체크된 행의 note_no를 넣자
+		var arrChk = new Array();
+		
+		$("input[name='chkBox']:checked").each(function(){
+			
+			var note_no = $(this).attr('id');
+			// alert("note_no ==> " + note_no);
+			
+			arrChk.push(note_no);
+			
+		});
+		
+		if(chkCnt == 0) {
+			alert("선택된 쪽지가 없습니다!");
+		}
+		else{
+			
+			$.ajax({
+		                url : "<%=request.getContextPath() %>/jieun/note/moveToTrashcanTemp.os",
+		                type: "GET",
+		                data: {"str_note_no" : JSON.stringify(arrChk),  // 배열을 문자열로 바꿔서 Controller 에 전달하기
+		                	   "cnt": chkCnt,
+		                	   "login_emp_no":${login_emp_no}},
+		                dataType:"JSON",
+		                success: function(json){
+		                    
+		     			    var result = json.result;
+		                	
+		                	if(result != 1) {
+		                        alert("임시보관함 테이블에서 삭제 실패했습니다!");
+		                        window.location.reload();
+		                    }
+		                    else{
+		                        alert("임시보관함 테이블에서 삭제 성공했습니다!");
+		                        window.location.reload();
+		                    }
+		                	
+		                },
+				        error: function(request, status, error){
+						       alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+						}
+			});
+        }					
+		
+	}	
+
+</script>
+
+
+<div class="row bg-title"  style="border-bottom: solid .025em gray;">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-	    <h4 class="page-title" style="color:#233B49;">임시 보관함</h4>
+	    <h4 class="page-title" style="color:#233B49; padding-left: 25px;">임시 보관함</h4>
 	</div>
 	
+	<form name="goTempListSelectFrm" >
+	
     <div id="note_searchType" style="display: inline-block;">
-        <select class="form-control" data-placeholder="Choose a Category" tabindex="1">
-	    	<option value="note_tilte">제목</option>
+        <select class="form-control" id="searchType" name="searchType" data-placeholder="Choose a Category" tabindex="1">
+	    	<option value="note_title" selected="selected">제목</option>
 	    	<option value="fk_emp_name">사원명</option>			
         </select>  
     </div>	 
     
     <div id="note_serachWord">
-        <input id="searchWord" type="text" class="form-control" placeholder="John doe">
+        <input id="searchWord" name="searchWord" type="text" class="form-control" placeholder="John doe">
     </div>        
     
     <div class="input-group" id="note_search"> 
     	<!-- <span class="input-group-btn"> -->
-        <button type="button" id="btnSearch" class="btn waves-effect waves-light btn-info" style="height: 35px;">
+        <button type="button" id="btnSearch" onclick="goNoteSearch()" class="btn waves-effect waves-light btn-info" style="height: 35px;">
         	<i class="fa fa-search"></i>
         </button>
         <!-- </span> -->
     </div>	
 	
+	</form>   
+	
 </div> 
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="white-box">
+        <div class="white-box" style="padding-top:5px;">
 			<div id="miniHeader">
 				<ul id="mimiHeaderGroup" style="padding: 0px; margin-bottom: -15px;">
 					<li class="miniHeaderList">
-						<button type="button" id="trash" >
+						<button type="button" id="trash" onclick="goNoteTempTrashDelete()">
 							<i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>
 							삭제
 						</button>
 					</li>
+					<!-- 
 					<li class="miniHeaderList">
-						<button type="button" id="trash" >
+						<button type="button" id="readReceive" onclick="goReadReceive()">
 							<i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
 							읽음
 						</button>
 					</li>
-					
-					<li class="miniHeaderList dropdown " style="margin-left: 720px; ">
-						<button type="button" id="trash" class="dropdown-toggle " data-toggle="dropdown" >
+					-->
+					<li class="miniHeaderList dropdown " style="margin-left: 810px; ">
+						<button type="button" id="btnOrder" class="dropdown-toggle " data-toggle="dropdown" >
 							<i class="fa fa-sort-amount-desc fa-fw" aria-hidden="true"></i>
 							정렬
 							<span class="fa fa-angle-down fa-fw"></span>
 						</button>
-					    <ul class= "dropdown-menu">
-					      <li><a href="#">보낸사람</a></li>
-					      <li><a href="#">제목</a></li>
-					      <li><a href="#">받은날짜</a></li>
+					    <ul class= "dropdown-menu" id="orderList">					    
+					      <li id="fk_emp_name"><a href="#">받은사람</a></li>
+					      <li id="note_title"><a href="#">제목</a></li>
+					      <li id="note_write_date"><a href="#">받은날짜</a></li>
 					    </ul>							
 					</li>
 					
-					<li class="miniHeaderList">
-						<button type="button" id="trash">
+					<li class="miniHeaderList dropdown">
+						<button type="button" id="btnReload" class="dropdown-toggle " data-toggle="dropdown" > <!-- style="background: white; border: white;" -->
 							<i class="fa fa-repeat fa-fw" aria-hidden="true"></i>
 							새로고침
 						</button>
+						<ul class= "dropdown-menu" id="ReloadTimeList">
+					      <li id="fiveMin"><a href="#">5분</a></li>
+					      <li id="tenMin"><a href="#">10분</a></li>
+					      <li id="fifteenMin"><a href="#">15분</a></li>
+					    </ul>
 					</li>
-					<li class="miniHeaderList" style="margin-top: 5px;">
+					<li class="miniHeaderList" style="margin-top: 5px; margin-right: 0px;">
+					<form name="pagingFrm">
 						<select class="form-control" id="sizePerPage" name="sizePerPage" style="height: 32px;">
 								<option value="20" selected="selected">20</option>
 								<option value="40">40</option>			
 								<option value="60">60</option>
 						</select>
+					</form>
 					</li>
 				</ul>
 			</div>
@@ -123,42 +355,94 @@
                     <thead>
                         <tr>
                             <th style="width: 40px;">
-								<input type="checkbox">
+								<input type="checkbox" id="checkAll">
 							</th>
                             <th  style="width: 40px;">
-                            	<span class="fa fa-star"></span>
+                            	<span class="fa fa-star-o"></span>
                             </th>
                             <th  style="width: 40px;">
                             	<span class= "fa fa-paperclip"></span>
                             </th>
-                            <th  style="width: 100px;">사원ID</th>
-                            <th  style="width: 550px;">제목</th>
-                            <th  style="width: 100px;">날짜</th>
+                            <th  style="width: 70px;">받은사원ID</th>
+                            <th  style="width: 70px;">사원명</th>
+                            <th  style="width: 430px;">제목</th>
+                            <th  style="width: 150px;">날짜</th>
                             <th  style="width: 40px;">크기</th>
                         </tr>
                     </thead>
                     
                     <tbody>
-                    	<c:forEach begin="0" end="10" varStatus="loop">
+                      <c:if test="${not empty noteTempList}">
+                    	<c:forEach var="templist" items="${noteTempList}" varStatus="status">
 	                        <tr>
 	                            <td style="width: 40px;"> 
-	                            	<input type="checkbox" class="check${loop.index}">
+	                            	<input type="checkbox" name="chkBox" id="${templist.note_no}">
 	                            </td>
-	                            <td style="width: 40px;">
-	                            	<span class="fa fa-star"></span>
-	                            </td>
-	                            <td style="width: 40px;">
-	                            	<span class= "fa fa-paperclip"></span> 	
-	                            </td>
-	                            <td style="width: 100px;">@Genelia</td>
-	                            <td style="width: 550px;">admin</td>
-	                            <td style="width: 100px;">20-12-09 22:10</td>
-	                            <td style="width: 40px;">25.2KB</td>
+	                            <c:if test="${templist.note_important == 1}">
+		                            <td style="width: 40px;">
+		                            	<span class="fa fa-star" style="color:red;"></span>
+		                            </td>
+	                            </c:if>
+	                            <c:if test="${templist.note_important != 1}">
+		                            <td style="width: 40px;">
+		                            	<span class="fa fa-star-o"></span>
+		                            </td>
+	                            </c:if>	                            
+	                            
+	                            <c:if test="${not empty templist.note_orgfilename}">                          
+		                            <td style="width: 40px;">
+		                            	<span class= "fa fa-paperclip"></span> 	
+		                            </td>
+		                        </c:if>
+		                        <c:if test="${empty templist.note_orgfilename}">
+	                            	<td style="width: 40px;">
+	                            	</td>		                            
+		                        </c:if>
+		                        <td style="width: 70px;">
+		                        	<c:if test='${not empty templist.fk_emp_no_receive || templist.fk_emp_no_receive != "" }'>
+		                        		${templist.fk_emp_no_receive}
+		                        	</c:if>
+		                        	<c:if test='${empty templist.fk_emp_no_receive || templist.fk_emp_no_receive == ""}'>
+		                        		(받는이없음)
+		                        	</c:if>		                        	
+		                        </td>
+		                        <td style="width: 70px;">
+		                        	<c:if test='${not empty templist.fk_emp_name || templist.fk_emp_name != "" }'>
+		                        		${templist.fk_emp_name}
+		                        	</c:if>
+		                        	<c:if test='${empty templist.fk_emp_name || templist.fk_emp_name == ""}'>
+		                        		(받는이없음)
+		                        	</c:if>			                        	
+		                        </td>
+		                        <td style="width: 430px;" onclick="goWriteModify('${templist.note_no}')">
+		                        	<c:if test='${not empty templist.note_title || templist.note_title != "" }'>
+		                        		${templist.note_title}
+		                        	</c:if>
+		                        	<c:if test='${empty templist.note_title || templist.note_title == ""}'>
+		                        		제목이없습니다.
+		                        	</c:if>		
+		                        </td>
+		                        <td style="width: 150px;">
+		                        	${templist.note_write_date}
+		                        </td>
+		                        <td style="width: 40px;">admin</td>
 	                        </tr>                    		
                     	</c:forEach>
+                    	</c:if>
+                    	<c:if test="${empty noteTempList}">
+                    		<tr>
+                    			<td colspan="8" style="text-align: center;">데이터가 없습니다.</td>
+                    		</tr>
+                    	</c:if>
                     </tbody>
                 </table>
             </div>
+            
+			<%-- === 페이지 바 보여주기 === --%>
+			<div align="center" style="width: 70%; border: solid 0px gray; margin: 20px auto">
+			   		${pageBar}
+			</div>            
+            
         </div>
     </div>
 </div>
