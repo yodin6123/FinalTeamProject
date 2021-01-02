@@ -19,7 +19,7 @@
     <meta name="description"
         content="Pixel Admin is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Pixel Admin Template by WrapPixel</title>
+    <title>(주)오성그룹</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/pixel-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16"
@@ -44,6 +44,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -88,8 +90,13 @@
     <script src="<%= request.getContextPath()%>/resources/js/custom.min.js"></script>
     <script src="<%= request.getContextPath()%>/resources/js/dashboard1.js"></script>
     <script src="<%= request.getContextPath()%>/resources/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+    <!-- 스마트에디터 -->
+    <script type="text/javascript" src="<%=request.getContextPath() %>/resources/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script> 
+    
+    
     <script type="text/javascript">
         $(document).ready(function () {
+        	/*
             $.toast({
                 heading: 'Welcome to Pixel admin',
                 text: 'Use the predefined ones, or specify a custom position object.',
@@ -99,6 +106,7 @@
                 hideAfter: 3500,
                 stack: 6
             })
+            */
         });
     </script>
    
