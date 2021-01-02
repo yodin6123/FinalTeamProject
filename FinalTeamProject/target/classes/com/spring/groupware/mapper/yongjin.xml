@@ -7,6 +7,7 @@
 	<!-- === 로그인 처리하기 === -->
 	<select id="loginEnd" parameterType="HashMap" resultType="com.spring.groupware.yongjin.model.EmployeeVO">
 		select emp_no, dept_name, position_name, board_grant_name, site_grant_name
+			 , fk_dept_no, fk_position_no, fk_board_grant_no, fk_site_grant_no
 		     , emp_name, emp_pwd, corp_phone, postcode, address, detail_address, extra_address, mobile, email, photo_route, photo_name, status
 		     , to_char(firstday, 'yyyy-mm-dd') AS firstday
 		from tbl_employee E
@@ -314,6 +315,14 @@
 	<select id="deptList" resultType="String">
 		select dept_name
 		from tbl_dept_name
+	</select>
+	
+	
+	<!-- 로그인 기록 확인하기 -->
+	<select id="getLoginHistoryCount" parameterType="String" resultType="int">
+		select count(*)
+		from tbl_loginhistory
+		where fk_emp_no = #{emp_no}
 	</select>
 
 </mapper>
