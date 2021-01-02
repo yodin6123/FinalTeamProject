@@ -10,7 +10,6 @@
 
   #miniHeader {
   	 display: inline-block;
-  	 
   }
   
   #btnGoList, #trash {
@@ -43,17 +42,10 @@
 
 </style>
 
-<script type="text/javascript">
-
-
-</script>
-
-
 <div class="row bg-title"  style="border-bottom: solid .025em gray;">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 	    <h4 class="page-title" style="color:#233B49; padding-left: 25px;">보낸 쪽지함</h4>
 	</div>
-	
 	
     <div class="input-group" id="goList"> 
         <button type="button" id="btnGoList" onclick="javascript:location.href='${goBackURL}'" style="height: 35px; margin-left: 835px;">
@@ -117,10 +109,5 @@
 			${notevo.note_content}
 		</div>
 	</div>
-	
-	
-	
-	
-  	
-  
+
 </div>    

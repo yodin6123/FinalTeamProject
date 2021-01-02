@@ -258,10 +258,8 @@ public class NoteDAO implements InterNoteDAO {
 	// 예약 임시보관테이블에서 select 해오기 
 	@Override
 	public List<NoteReservationTempVO> getReservationTempList(Map<String, String> paraMap) {
-		
 		List<NoteReservationTempVO> reservationTempList = sqlsession.selectList("note.getReservationTempList", paraMap);
 		return reservationTempList;
-		
 	}
 	
 	// 예약 발송 했을떄 select 해오는 예약 임시보관함 리스트
@@ -326,7 +324,5 @@ public class NoteDAO implements InterNoteDAO {
 		int n = sqlsession.delete("note.deleteFromTblTemp", paraMap);
 		return n;
 	}
-	
-	
-	
+
 }

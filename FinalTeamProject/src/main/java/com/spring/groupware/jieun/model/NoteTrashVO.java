@@ -211,9 +211,4 @@ public class NoteTrashVO { // 휴지통
 		this.note_del_login_emp_no = note_del_login_emp_no;
 	}
 	
-	
-	
-
-	
-	
 }

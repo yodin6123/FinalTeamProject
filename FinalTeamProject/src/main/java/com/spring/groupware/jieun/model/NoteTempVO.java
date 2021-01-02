@@ -215,11 +215,5 @@ public class NoteTempVO { // 임시보관함
 	public void setNote_receive_del_status(int note_receive_del_status) {
 		this.note_receive_del_status = note_receive_del_status;
 	}
-
-	
-
-	
-
-	
 	
 }

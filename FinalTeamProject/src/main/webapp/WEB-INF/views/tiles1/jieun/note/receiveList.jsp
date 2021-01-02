@@ -10,7 +10,6 @@
 
   #miniHeader {
   	 display: inline-block;
-  	 
   }
   
   #trash, #btnReload, #readReceive, #btnOrder{
@@ -64,14 +63,6 @@
 	    // ===== 페이징 처리 ===== //
 	    $("select#sizePerPage").change(function(){
 	    	
-	    	// 한 페이지에 몇개의 리스트를 보여줄건지의 값을 넘기자
-	    	
-			alert("클릭한 곳의 value 값은 ? " + $("#sizePerPage option:selected").val()); 
-			
-			var sizePerPage = $("#sizePerPage option:selected").val();
-			
-			<%-- location.href="<%=request.getContextPath() %>/jieun/note/sendList.os?sizePerPage="+sizePerPage; --%>
-			
 			var frm = document.pagingFrm;
 			frm.method = "GET";
 		    frm.action = "<%= ctxPath%>/jieun/note/receiveList.os";
@@ -91,76 +82,24 @@
 		
 		// ===== 새로고침 기능 ===== // 
 		$("li#fiveMin").click(function(){
-			
-			alert("하하하하 5분 새로고침");
 			window.setTimeout('window.location.reload()', 300000); 
 		});
 		
 		$("li#tenMin").click(function(){
-			
-			alert("하하하하 10분 새로고침"); 
 			window.setTimeout('window.location.reload()', 600000);
-			
 		});
 		
 		$("li#fifteenMin").click(function(){
-			
-			alert("하하하하 15분 새로고침");
 			window.setTimeout('window.location.reload()', 900000);
-			
 		});
 		
 		// ===== 정렬 기능 ===== //
 		
 		$("ul#orderList li").click(function(){
-			
-			alert("클릭한 곳의 id 값은 ? " + $(this).attr('id')); 
-			
 			var orderType = $(this).attr('id');
-			
 			location.href="<%=request.getContextPath() %>/jieun/note/receiveList.os?orderType="+orderType;
 			
-			
 		});
-		
-		<%--
-		$("ul#orderList li").click(function(){
-			
-			alert("클릭한 곳의 id 값은 ? " + $(this).attr('id')); 
-			
-			var orderType = $(this).attr('id');
-			
-			// 자바스크립트로 정렬기능 구현해 보기
-			// 먼저 자바스크립트로 DB 데이터 받아서 배열로 만들기
-			var arr_receiveList = new Array();
-			
-			<c:forEach var="reivelists" items="${noteReceiveList}" >
-			
-				var json = new Object();
-				json.emp_name = "${reivelists.emp_name}"; 
-				json.note_tilte = "${reivelists.note_title}";
-				json.note_write_date = "${reivelists.note_write_date}";
-				
-				arr_receiveList.push(json);
-			
-			</c:forEach>
-			
-			alert("결과값 ===> " + JSON.stringify(arr_receiveList));
-			
-			// 이름의 오름차순 
-			arr_receiveList.sort(function(a, b) { // 오름차순
-				return a.emp_name < b.emp_name ? -1 : a.emp_name > b.emp_name ? 1 : 0; 
-
-			});
-			
-			for (var i = 0; i < arr_receiveList.length; i++) {
-			    console.log("이름의 오름차순 정렬결과 ==> " + arr_receiveList[i].emp_name);
-			}
-			
-			
-		});
-		--%>		
-		
 		
 	});
 	
@@ -198,7 +137,6 @@
 		
 		// 체크된 갯수 세기
 		var chkCnt = $("input[name='chkBox']:checked").length;
-		alert("체크된 갯수는 ??? " + chkCnt);
 		
 		// 배열에 체크된 행의 note_no를 넣자
 		var arrChk = new Array();
@@ -206,12 +144,7 @@
 		$("input[name='chkBox']:checked").each(function(){
 			
 			var note_no = $(this).attr('id');
-			alert("note_no ==> " + note_no);
-			
 			arrChk.push(note_no);
-			
-
-			
 		});
 		
 		if(chkCnt == 0) {
@@ -253,7 +186,6 @@
 		
 		// 체크된 갯수 세기
 		var chkCnt = $("input[name='chkBox']:checked").length;
-		alert("체크된 갯수는 ??? " + chkCnt);
 		
 		// 배열에 체크된 행의 note_no를 넣자
 		var arrChk = new Array();
@@ -261,8 +193,6 @@
 		$("input[name='chkBox']:checked").each(function(){
 			
 			var note_no = $(this).attr('id');
-			alert("note_no ==> " + note_no);
-			
 			arrChk.push(note_no);
 			
 		});		
@@ -454,10 +384,8 @@
     </div>
 </div>
 <!-- /.row -->        
-
    
-   <form name = "goReceiveOneDetailFrm">
-   		<input type="hidden" name="note_no" />
-   		<input type="hidden" name="goBackURL" value="${goBackURL}" />  
-   </form>
-   
+<form name = "goReceiveOneDetailFrm">
+	<input type="hidden" name="note_no" />
+	<input type="hidden" name="goBackURL" value="${goBackURL}" />  
+</form>

@@ -10,7 +10,6 @@
 
   #miniHeader {
   	 display: inline-block;
-  	 
   }
   
   #trash, #btnReload, #btnOrder {
@@ -49,21 +48,15 @@
 		
 		// ===== 새로고침 기능 ===== // 
 		$("li#fiveMin").click(function(){
-			
-			alert("하하하하 5분 새로고침");
 			window.setTimeout('window.location.reload()', 300000); 
 		});
 		
 		$("li#tenMin").click(function(){
-			
-			alert("하하하하 10분 새로고침"); 
 			window.setTimeout('window.location.reload()', 600000);
 			
 		});
 		
 		$("li#fifteenMin").click(function(){
-			
-			alert("하하하하 15분 새로고침");
 			window.setTimeout('window.location.reload()', 900000);
 			
 		});
@@ -79,20 +72,14 @@
 		});
 		
 		// ===== 정렬 기능 ===== //
-		
 		$("ul#orderList li").click(function(){
 			
-			alert("클릭한 곳의 id 값은 ? " + $(this).attr('id')); 
-			
 			var orderType = $(this).attr('id');
-			
 			location.href="<%=request.getContextPath() %>/jieun/note/trash.os?orderType="+orderType;
 			
 		});		
-		
 
 		// ===== 검색타입과 검색어 유지 시키기 ===== //
-		
 	    if(${searchWord != null} ) { // 또는 if(${not empty paraMap}) 도 가능
 		    // 넘어온 paraMap이 null이 아니라면(값이 있다면)
 		    $("select#searchType").val("${searchType}");
@@ -105,13 +92,8 @@
 	    
 	    // ===== 페이징 처리 ===== //
 	    $("select#sizePerPage").change(function(){
-	    	
 	    	// 한 페이지에 몇개의 리스트를 보여줄건지의 값을 넘기자
-	    	
-			alert("클릭한 곳의 value 값은 ? " + $("#sizePerPage option:selected").val()); 
-			
 			var sizePerPage = $("#sizePerPage option:selected").val();
-			
 			<%-- location.href="<%=request.getContextPath() %>/jieun/note/sendList.os?sizePerPage="+sizePerPage; --%>
 			
 			var frm = document.pagingFrm;
@@ -120,9 +102,6 @@
 		    frm.submit();				
 	    	
 	    });
-				
-		
-				
 		
 	});
 	
@@ -150,18 +129,13 @@
 		
 		// 체크된 갯수 세기
 		var chkCnt = $("input[name='chkBox']:checked").length;
-		alert("체크된 갯수는 ??? " + chkCnt);
 		
 		// 배열에 체크된 행의 note_no를 넣자
 		var arrChk = new Array();
 		
 		$("input[name='chkBox']:checked").each(function(){
-			
 			var note_no = $(this).attr('id');
-			alert("note_no ==> " + note_no);
-			
 			arrChk.push(note_no);
-			
 		});
 		
 		if(chkCnt == 0) {
@@ -194,9 +168,7 @@
 			});
         }		
 		
-		
 	}	
-	
 	
 	// === 제목 클릭 시 쪽지 상세 페이지 보여주기 === // 
 	function goTrashOneDetail(note_no) {
@@ -252,14 +224,6 @@
 							삭제
 						</button>					
 					</li>
-					<!-- 
-					<li class="miniHeaderList">
-						<button type="button" id="trash" >
-							<i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
-							읽음
-						</button>
-					</li>
-					-->
 					<li class="miniHeaderList dropdown " style="margin-left: 810px; ">
 						<button type="button" id="btnOrder" class="dropdown-toggle " data-toggle="dropdown" >
 							<i class="fa fa-sort-amount-desc fa-fw" aria-hidden="true"></i>

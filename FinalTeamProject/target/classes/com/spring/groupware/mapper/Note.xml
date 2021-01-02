@@ -12,7 +12,6 @@
 		left join tbl_dept_name D
 		on E.fk_dept_no = D.dept_no
 		order by fk_position_no desc
-	
    </select>
    
    <!-- 해당 부서 사원리스트 불러오기 -->
@@ -28,7 +27,6 @@
 		</if>
 		
 		order by fk_position_no desc
-	
    </select>
    
    <!-- 검색어에 따른 사원리스트 불러오기 -->
@@ -41,7 +39,6 @@
 		on e.fk_dept_no = d.dept_no
 		where emp_name like '%' || #{searchWord} || '%' 
 		order by fk_position_no desc
-		
    </select>
    
    <!-- 첨부파일 없는 쪽지쓰기 -->
@@ -50,7 +47,6 @@
    							 note_content, note_important, note_reservation_status, note_read_status, note_write_date)
    		values(seq_note_no.nextval, #{fk_emp_no_send}, #{fk_emp_no_receive}, #{fk_emp_name}, #{note_title}, 
    			   #{note_content}, #{note_important}, default, default, default) 
-   
    </insert>
    
    <!-- 첨부파일 있는 쪽지쓰기 -->
@@ -61,7 +57,6 @@
    		values(seq_note_no.nextval, #{fk_emp_no_send}, #{fk_emp_no_receive}, #{fk_emp_name}, #{note_title}, 
    			   #{note_content}, #{note_filename}, #{note_orgfilename}, #{note_filesize}, 
    			   #{note_important}, default, default, default) 
-		
    </insert> 
    
    <!-- 임시보관함에서 제목클릭해서 들어왔을때 첨부파일이 있는경우 쪽지테이블에 따로 insert 하기 -->
@@ -72,7 +67,6 @@
    		values(seq_note_no.nextval, #{fk_emp_no_send}, #{fk_emp_no_receive}, #{fk_emp_name}, #{note_title}, 
    			   #{note_content}, #{note_filename}, #{note_orgfilename}, #{note_filesize}, 
    			   #{note_important}, default, default, default) 
-		
    </insert>   
 
    <!-- 보낸쪽지함 리스트 불러오기 -->
@@ -424,7 +418,6 @@
    			   #{note_content}, #{note_important}, 
    			   #{note_reservation_status}, #{note_read_status}, to_date(#{note_write_date}, 'yyyy-mm-dd hh24:mi:ss'), to_date(#{note_reservation_date}, 'yyyy-mm-dd hh24:mi:ss'), 
    			   #{note_send_del_status}, #{note_receive_del_status}, #{note_del_login_emp_no})      
-   
    </insert>   
    
    <!-- 받은쪽지함에서 체크한 쪽지 번호를 가지고 쪽지테이블에서 delete 시키기 -->
@@ -939,7 +932,6 @@
         where rno between #{startRno} and #{endRno}  			
 		</if>
 	
-		
    </select>
    
    <!-- 예약 발송 했을떄 select 해오는 예약 임시보관함 리스트 reservationTempList -->
@@ -975,7 +967,6 @@
    
    <!-- 예약 쪽지함(예약 임시보관함 테이블) 상세 쪽지 보기 -->
    <select id="reservationOneDetail" parameterType="HashMap" resultType="com.spring.groupware.jieun.model.NoteReservationTempVO">
-		 
 		select note_no, fk_emp_no_send, E.emp_name, D.dept_name as dept_name_send, 
                fk_emp_no_receive, fk_emp_name, 
                (
@@ -1064,6 +1055,5 @@
    		delete from tbl_note_temp 
    		where note_no = #{note_no}
    </delete>
-   
 
 </mapper>

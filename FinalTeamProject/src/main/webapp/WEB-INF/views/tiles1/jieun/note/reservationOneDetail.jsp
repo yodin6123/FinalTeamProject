@@ -10,7 +10,6 @@
 
   #miniHeader {
   	 display: inline-block;
-  	 
   }
   
   #btnGoList {
@@ -43,16 +42,6 @@
 
 </style>
 
-<script type="text/javascript">
-
-	$(document).ready(function(){
-		
-		
-	});
-
-</script>
-
-
 <div class="row bg-title"  style="border-bottom: solid .025em gray;">
 	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 	    <h4 class="page-title" style="color:#233B49;  padding-left: 25px;">예약 쪽지함</h4>
@@ -67,7 +56,6 @@
         	
 </div> 
 
-<!--  border: solid 2px navy;  border: solid 2px pink; -->
 <div class="noteDetailWrap" style="margin-top: 20px; width:100%;">
 	<div class="noteTitleSendReceiveInfo" style="margin-top: 20px;">
 		<ul class="titleSendReceiveGroup" style="margin-top: 20px; padding-left: 10px;">
@@ -119,10 +107,5 @@
 			${noteReservationTempvo.note_content}
 		</div>
 	</div>
-	
-	
-	
-	
-  	
-  
+
 </div>    

@@ -139,16 +139,4 @@ public interface InterNoteDAO {
 	// 임시보관함에서 쪽지 쓰기의 보내기를 한 경우 클릭해서 들어온 임시보관함의 note_no를 삭제
 	int deleteFromTblTemp(Map<String, String> paraMap);
 
-
-
-
-
-
-
-
-
-
-
-
-
 }

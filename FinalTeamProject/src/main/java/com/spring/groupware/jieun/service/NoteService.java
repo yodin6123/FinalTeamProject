@@ -1,10 +1,7 @@
 package com.spring.groupware.jieun.service;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -198,7 +195,6 @@ public class NoteService implements InterNoteService {
 		return n;
 	}
 	
-	
 	// 쪽지임시보관테이블에 첨부파일이 있는 쪽지 insert 하기
 	@Override
 	public int writeTemp_withFile(NoteTempVO noteTempvo) {
@@ -233,7 +229,6 @@ public class NoteService implements InterNoteService {
 		int n = dao.getNoteTrashTotalCount(paraMap);
 		return n;
 	}
-	
 	
 	// 휴지통 쪽지 상세 쪽지 보기 
 	@Override
@@ -272,17 +267,17 @@ public class NoteService implements InterNoteService {
 	      // === 현재시각 나타내기 === //
 	      Calendar currentDate = Calendar.getInstance(); // 현재날짜와 시간을 얻어온다. 
 	      SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
-	      System.out.println("Note에서 현재시각은 => " + df.format(currentDate.getTime()));
+	      // System.out.println("Note에서 현재시각은 => " + df.format(currentDate.getTime()));
 	      // Note에서 현재시각은 => 2020-12-23 14:41
 	      // Note에서 현재시각은 => 2020-12-23 14:42
 	      
 	      // 예약임시테이블에서 select 한 결과의 년, 월, 일, 시, 분과 자바에서 구한 현재 년, 월, 일, 시, 분이 같다면
 	      // 쪽지 테이블에 insert 하기 
 	      
-	      
 	      // 예약 임시보관테이블에서 select 해오기 
 	      List<NoteReservationTempVO> reservationTempList = dao.reservationTempList();
 	      
+	      /*
 	      for(NoteReservationTempVO reserTempvo : reservationTempList) {
 				System.out.println("보낸사원ID==>" + reserTempvo.getFk_emp_no_send());
 				System.out.println("사원명==>" + reserTempvo.getEmp_name());
@@ -290,8 +285,9 @@ public class NoteService implements InterNoteService {
 				System.out.println("날짜==>" + reserTempvo.getNote_write_date());	
 				System.out.println("쪽지 번호 ==> " + reserTempvo.getNote_no());
 				System.out.println("예약 설정 시간 ==> " + reserTempvo.getNote_reservation_date());
-			}	      
-	     
+		  }	      
+	     */
+	      
 	      int n = 0;
 	      
 	      // 쪽지 보내기 //
@@ -299,7 +295,7 @@ public class NoteService implements InterNoteService {
 	    	  // reservationTempList 의 값이 null이 아니고 0보다 커야한다.
 	    	  
 	    	  for(int i=0; i<reservationTempList.size(); i++) {
-	    		  
+	    		    /*
 					System.out.println("예약 보낸사원ID==>" + reservationTempList.get(i).getFk_emp_no_send());
 					System.out.println("예약 사원명==>" + reservationTempList.get(i).getFk_emp_name());
 					System.out.println("예약 제목==>" + reservationTempList.get(i).getNote_title());
@@ -307,12 +303,13 @@ public class NoteService implements InterNoteService {
 					System.out.println("예약 설정 시간 ==> " + reservationTempList.get(i).getNote_reservation_date());
 					// 예약 설정 시간 ==>     2020-12-23 14:50
 					// Note에서 현재시각은 => 2020-12-23 14:42
+					*/
 					
 	    		  if( reservationTempList.get(i).getNote_reservation_date().equals(df.format(currentDate.getTime())) ) {
 	    			  
-	    			  System.out.println("if문으로 들어와 지니??@@@@@@@");
-	    			  System.out.println("if문 안에서 예약 시간 test ===> " + reservationTempList.get(i).getNote_reservation_date());
-	    			  System.out.println("if문 안에서 예약 시간 현재시간 ===> " + df.format(currentDate.getTime()));
+	    			  // System.out.println("if문으로 들어와 지니??@@@@@@@");
+	    			  // System.out.println("if문 안에서 예약 시간 test ===> " + reservationTempList.get(i).getNote_reservation_date());
+	    			  // System.out.println("if문 안에서 예약 시간 현재시간 ===> " + df.format(currentDate.getTime()));
 	    			  
 	    			  // if문으로 들어와 지니??@@@@@@@
 	    			  // if문 안에서 예약 시간 test ===>  2020-12-23 15:10
@@ -336,26 +333,19 @@ public class NoteService implements InterNoteService {
 	    			  
 	    			  // notevo.setNote_reservation_date( reservationTempList.get(i).getNote_reservation_date() );
 	    			  
+	    			  // 파일이 null이 아니면 파일이 있는 경우
 	    			  if( reservationTempList.get(i).getNote_filename() != null ) { 
-	    				  // 파일이 null이 아니면 파일이 있는 경우
-
-		    			  // n = dao.write_withFile(notevo);
-	    				  
 		    			  // 쪽지 테이블에 파일이 있고 예약 상태 insert 하기
 		    			  n = dao.write_withFileAndReservation(notevo);
-	    				  
 	    			  }
 	    			  else {
-	    				  // n = dao.write(notevo);
-	    				  
 	    				  // 쪽지 테이블로 첨부 파일 없고 예약 상태 insert 하기 
 	    				  n = dao.write_withReservation(notevo);  
 	    			  }
 	    			  
-	    			  
 	    		  } // end of if()----------------------------
 	    		  else {
-	    			  System.out.println("아아아아아아!!!!!if문 아님");
+	    			  // System.out.println("아아아아아아!!!!!if문 아님");
 	    		  }
 	    		  
 	    	  } // end of for()------------------------------
@@ -364,10 +354,7 @@ public class NoteService implements InterNoteService {
 	    	  
 			  if(n == 1) {
 				  // 예약 발송 성공
-				  System.out.println("@@@@@ 예약 시간에 맞춰 발송 되었습니다. @@@@@");
-				  
-				  
-				  System.out.println("------------------------------------");
+				  // System.out.println("@@@@@ 예약 시간에 맞춰 발송 되었습니다. @@@@@");
 				  
 				  // 메일 발송이 성공하는 순간 예약 임시보관 테이블 비워버리기
 				  if(reservationTempList != null && reservationTempList.size()>0) {
@@ -448,6 +435,5 @@ public class NoteService implements InterNoteService {
 		int n = dao.deleteFromTblTemp(paraMap);
 		return n;
 	}
-
 	
 }

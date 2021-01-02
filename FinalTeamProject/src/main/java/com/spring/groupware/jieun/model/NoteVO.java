@@ -222,14 +222,4 @@ public class NoteVO { // 쪽지함
 		this.note_receive_del_status = note_receive_del_status;
 	}
 	
-	
-
-	
-
-	
-	
-	
-
-	
-	
 }

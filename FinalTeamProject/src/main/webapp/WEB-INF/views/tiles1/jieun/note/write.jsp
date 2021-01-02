@@ -204,12 +204,6 @@
 	    text-align: left;
 	    margin-bottom: 10px;
    }
-   span.addGroup {
-   		
-   }
-   span.addUser {
-   		
-   }
    .addArea {
    		margin-top: 147px;
    }
@@ -257,12 +251,15 @@
   };
 
   $(document).ready(function () {
+	  
+	    // 글 작성 들어왔을때 받는사람은 무조건 모달창에서 선택하기(비활성화)
+	    $("input#fk_emp_no_receive").attr("disabled", true);
   	
 	  	// ====== 선택된  파일에서 파일명만 추출 ====== // 
 		var fileTarget = $('#note_filename_upload'); 
 		fileTarget.on('change', function(){ // 값이 변경되면 
 		
-			alert("파일 선택 완료");	
+			// alert("파일 선택 완료");	
 			if(window.FileReader){ // modern browser 
 				var filename = $(this)[0].files[0].name;  // 첫번째 파일명
 			} 
@@ -276,8 +273,14 @@
 		// ====== 다시쓰기 버튼 이벤트 ====== // 
 		$("#reset").click(function(){
 			
+			CKEDITOR.instances.note_content.setData("");	
+			
 			var inputTextVal = $("input[type=text]").val("");
-			var textareaVal = $("textarea#note_content").val("");
+			// var textareaVal = $("textarea#note_content").val("");
+			
+			$("input#fk_emp_no_send").val("${sessionScope.loginemp.emp_no}");	
+			
+			$("input#fk_emp_no_receive").attr("disabled", true);			
 
 			if( $("input[type=checkbox]").is(":checked") == true ) {
 				// 체크 되어 있다면
@@ -285,7 +288,6 @@
 			}
 			
 			$('.upload-name').val("선택된 파일이 없습니다.");  
-			
 			
 		}); 
 		
@@ -301,8 +303,6 @@
 		
 	    // ====== 보내기 버튼 클릭 이벤트 ====== // 
 	    $("button#send").click(function(){
-	    	
-	    	// checkUnload = false;
 	    	
 			// ====== 유효성 검사 ====== //
 		    // 받는사람
@@ -327,14 +327,6 @@
 		    }	    
 		    
 		    // 작성내용(Ckeditor 유효성 검사)
-		    /*
-		    var note_contentVal = $("textarea#note_content").val().trim();
-		    if(note_contentVal == "") {
-		    	alert("보낼내용을 입력하세요!");
-		    	return false;
-		    }
-		    */
-		    
 		    if(CKEDITOR.instances.note_content.getData() == '' 
 		    		|| CKEDITOR.instances.note_content.getData().length == 0) {
 		    	alert("보낼내용을 입력하세요!");
@@ -342,7 +334,6 @@
 		    }
 		    
 		    // 중요! 체크박스가 선택되어있는지 아닌지 확인하자
-		    
 		    var note_importantVal = 0;
 		    
 		    if($("input[name=note_important]").prop("checked")) {
@@ -359,10 +350,8 @@
 	    	
 	    	// 예약 발송에 값이 있는 경우에는 예약 임시 저장 테이블로 보낸다. // 
 	    	if($("span#reservationTime").text() != "") {
-	    		alert("예약에 값이 있다. ");
 	    		
 	    		var reservationSetTime = $("span#reservationTime").text();
-	    		
 		    	var frm = document.noteWriteFrm;
 		    	frm.note_importantVal.value = note_importantVal;
 		    	frm.note_reservation_date.value = reservationSetTime;
@@ -372,10 +361,8 @@
 	    		
 	    	}	    	
 	    	else {
-	    		alert("예약에 값이 없다.");
 	    		return false;
 	    	}
-	    	
 	    	
 	    });
 	    
@@ -404,11 +391,8 @@
 	    // ====== 주소록 상단 탭 클릭 한 요소 CSS 적용시키기 ====== //
 		$(".tab_nav li").click(function(event){
 			
-			alert($(this).attr('value'));
-			
 			$(this).addClass("ul_state_active");
 			$(".tab_nav li").not($(this)).removeClass("ul_state_active");
-			
 			
 		});
 		
@@ -474,13 +458,13 @@
 		$('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-folder-close'});
 
 		$('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});    
-	    
-		// ====== 주소록 모달창 js 끝 ====== // 
+
+		// ====== 주소록 모달창 js 끝 ====== //
+		
 		
 		// ====== 예약발송 모달창 js 시작 ====== // 
 		
-		// 현재 년, 월 구하기(방법1)
-		
+		// 현재 년, 월 구하기
 		var today = new Date();
 		var year = today.getFullYear();			// 년
 		var month = (today.getMonth() + 1);		// 월
@@ -493,18 +477,6 @@
 	    
 	    var dateToday = year + '-' + month + '-' + date;
 	    $('#selectSendDate').val(dateToday);		    
-		
-	    // 방법2
-	    /*
-	    Date.prototype.toDateInputValue = (function() {
-		    var local = new Date(this);
-		    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-		    return local.toJSON().slice(0,10);
-		});
-	    
-	    // $('#selectSendDate').val(new Date().toDateInputValue());
-	    */
-    
 		
 		// 현재 시간 구하기
 		var date = new Date();
@@ -522,13 +494,6 @@
 			    //may want to use $.trim in here
 			    return $(this).text() == hour;
 		}).attr('selected', true);
-		  
-		/*
-		$("#selectSendTimeMinute option").filter(function() { 
-			    //may want to use $.trim in here
-		  		return $(this).text() == minute;
-		}).attr('selected', true);	  
-		*/
 		 
 		$("#selectSendTimeMinute option").eq(0).attr('selected', true);		
 		
@@ -542,12 +507,6 @@
 				 $("input#searchWord").val("");
 				
 				var fk_dept_no = $(this).val();
-				alert("클릭한 조직 이름의 value 값은? ==> " + fk_dept_no);
-				
-				// sessionStorage.setItem("fk_dept_no", fk_dept_no);
-				// var fk_dept_noVal = sessionStorage.getItem("fk_dept_no");
-				
-				console.log("타입" + typeof(fk_dept_no)); // number 
 				
 				$.ajax({ 
 					url:"<%= ctxPath %>/jieun/note/writeAddAddress.os",
@@ -580,7 +539,6 @@
 
 			               });
 			               
-		            	   
 		            	   $("tbody#empListTbody").html(html);
 		            	   
 			            }
@@ -590,18 +548,6 @@
 				    }
 					
 				});		
-				
-				
-				var emp_name = $(".emp_name").text();
-				var position_name = $(".position_name").text();
-				var dept_name = $(".dept_name").text();
-				var emp_no = $(".emp_no").text();
-				
-				console.log("사원명 ==> " + emp_name);
-				console.log("직급명 ==> " + position_name);
-				console.log("부서명 ==> " + dept_name);
-				console.log("사원번호 ==> " + emp_no);
-												
 				
 			});
 		});	
@@ -684,9 +630,7 @@
 		// ====== 주소록에서 사원버튼 클릭했을 때 ====== // 
 		$(document).on("click","span.addUser",function() {			
 			
-			//체크된 체크박스의 갯수를 구할 수 있음.		
-			console.log("length: "+$("input[name=chkbox]:checked").length);
-			
+			//체크된 체크박스의 갯수를 구할 수 있음.
 			var chkCount = $("input[name=chkbox]:checked").length;
 			
 			// 체크된 Row의 값을 가져온다.
@@ -726,40 +670,28 @@
 				
 				// 배열 반복문, 사원 리스트 중복 값 체크 및 두번재 요소부터 엔터 값 적용하기
 				$.each(empList, function(index, item){
-					  
-					// console.log("$.each의 empList 결과는무엇?==? " + item.emp_name);
-					// console.log("$.each의 empList 결과는무엇?==? " + item.position_name);
-					// console.log("$.each의 empList 결과는무엇?==? " + item.dept_name);
-					// console.log("$.each의 empList 결과는무엇?==? " + item.emp_no);
-					
+
 					// 사원 리스트 중복 값 체크를 위한 temp 변수(체크한 내용이 다 들어가있는 변수)
 					resultEmpListTemp = item.emp_name + "/" + item.position_name + "/" +item.dept_name + "/" +item.emp_no;
-					
-					// 누적값과 temp와 비교
+
+					// 누적값과 temp와 비교(indexOf는 해당 문자열을 찾는데 찾는 값이 없으면 -1 반환)
 					if(resultEmpList.indexOf(resultEmpListTemp) == -1 ) {
-					
-						if(index == 0) { 
+
+						if(index == 0) { // 첫번째 요소
 							resultEmpList += item.emp_name + "/" + item.position_name + "/" +item.dept_name + "/" +item.emp_no;
 						}
 						else { // 첫번째 요소가 아닐때만 사원명 앞에 엔터값 추가
 							resultEmpList += "\n" + item.emp_name + "/" + item.position_name + "/" +item.dept_name + "/" +item.emp_no;;
 						}
 					}
-					  
 				});
-				
-				console.log("결과 resultresultresult =======>" + resultEmpList );
-				
-				console.log("타입result" + typeof(resultEmpList)); // string
-				
+
 			}); // 체크박스 반복
-			
 			
 			// 첫번째 행에 문자열 넣기 (결과값)
 			$(".empAddLists").eq(0).text(resultEmpList);
 			
 		}); // 버튼 클릭 끝
-
   });
   
   // ====== 주소록에서 확인 버튼 눌렀을때 ====== //  
@@ -767,15 +699,10 @@
 	  
 	  // 넣은 문자열 추출
 	  var data = $(".empAddLists").eq(0).text();
-	  
-	  console.log("ul 태그에서 읽어온 data 값 ==> " + data);
 	
 	  // 엔터를 구분자를 기준으로 잘라서 배열 만들기 
 	  var arrData = data.split("\n");
-	  
-	  console.log("\n를 기준으로 자른결과 ==> " + arrData);
-	  // console.log("타입" + typeof(arrData)); // Object 
-	  
+
 	  // 사원번호 얻기
 	  var empnoExtract = "";
 	  var arrEmpno = [];
@@ -786,77 +713,44 @@
 	  
 	  // 배열 반복문 출력
 	  arrData.forEach(function(item, index, arr){
-	  	  
+		  
 		  // 사원번호
-		  console.log("배열 요소 ===> " + item);
 		  empnoExtract = arr[index].lastIndexOf('/'); // 배열[index]의 마지막 /의 위치를 구한다. 
-		  console.log("배열 요소 empnoExtract ===> " + empnoExtract);
-		  // arrDeptno += arr[index].slice(deptnoExtract+1) + ","; // 마지막 / 의 다음부터 끝까지 추출해서 새로운 arrDeptno 배열에 담는다.
-		  // console.log("배열 요소 arrEmpno ===> " + arrEmpno); 
-		  // 2020012,2020007,
-		  
-		  arrEmpno.push(arr[index].slice(empnoExtract+1));
-		  
-		  console.log("배열 요소 arrEmpno ===> " + arrEmpno); 
+		  arrEmpno.push(arr[index].slice(empnoExtract+1)); // 마지막 / 의 다음부터 끝까지 추출해서 새로운 arrDeptno 배열에 담는다. (사원번호 추출)
 		  
 		  // 사원명
 		  empNameExtract = arr[index].indexOf('/');
 		  arrEmpName.push(arr[index].slice(0, empNameExtract)); // slice : 0번째부터 empNameExtract 앞까지 추출
 		  
 	  });
-	  
-	  console.log("마지막 arrEmpno 추출 =====> " + arrEmpno);
-	  console.log("마지막 arrEmpName 추출 =====> " + arrEmpName);
-	  
-	  for(var i=0; i<arrEmpName.length; i++) {
-		  console.log("배열 " + i + "=> " + arrEmpName[i]);
-		  
-	  }
-	  
-	  for(var i=0; i<arrEmpno.length; i++) {
-		  console.log("배열 " + i + "=> " + arrEmpno[i]);
-		  
-	  }	  
-	  
+	  	  
 	  // 배열을 문자열로 바꾸기
-	  var strEmpno = arrEmpno.join(",");
-	  
-	  var strEmpName = arrEmpName.join(",");
-	  
-	  console.log("마지막 arrEmpno 추출을 문자열로 만들기  =====> " + strEmpno);
-	  // 2020013,2020019
-	  
-	  console.log("마지막 arrEmpName 추출을 문자열로 만들기  =====> " + strEmpName);
-	  // 강과장,남과장
-	  
+	  var strEmpno = arrEmpno.join(",");     // 사원번호
+	  var strEmpName = arrEmpName.join(","); // 사원명
+
 	  // 빋는 사람 태그 내에 value 넣기
 	  $("input#fk_emp_no_receive").val(strEmpno); // 사원번호
 	  $("input#fk_emp_no_receive_name").val(strEmpName); // 사원명
 	  	  
 	  $('.modal').modal('hide'); // 확인버튼 누르자 마자 모달창 숨기기
+	  
+	  // 글 작성 들어왔을때 받는사람은 무조건 모달창에서 선택하기(비활성화 해제)
+	  $("input#fk_emp_no_receive").removeAttr("disabled");
+
   }
   
   
   // ===== 예약 확인 모달창에서 날짜 및 시간 선택 후 확인 버튼 눌렀을때 ===== //
   function reservationOk() {
 	  
-	  alert("예약 발송 확인 버튼누른 경우");
-	  
 	  // 선택한 날짜 받아오기
 	  var selectDateVal = $("input#selectSendDate").val();
 	  
-	  console.log("선택된 년, 월, 일 ==> " + selectDateVal);
-	  console.log("년, 월, 일 타입은 ? == > " + typeof(selectDateVal));
-	  
 	  // 선택한 몇시 받아오기 
 	  var selectHourVal = $("#selectSendTimeHour option:selected").val();
-	  console.log("선택된 시각  ==> " + selectHourVal);
-	  console.log("시각 타입은 ? == > " + typeof(selectHourVal));
 	  
 	  // 선택한 몇분 받아오기 
 	  var selectMinVal = $("#selectSendTimeMinute option:selected").val();
-	  console.log("선택된 분  ==> " + selectMinVal);
-	  console.log("분 타입은 ? == > " + typeof(selectMinVal));
 	  
 	  var reservationDate = selectDateVal + " " + selectHourVal + ":" + selectMinVal;
 	  
@@ -877,11 +771,7 @@
 
 <div class="row" style="padding-left: 4%;">
  <div style="width: 1175px; " >  
-   <!--  <div class="white-box" > -->
-   <div>
- <!--  
- <h3 style="font-weight: bold; margin-bottom: 20px;">쪽지쓰기</h3>
- --> 	
+ <div>	
 
  <ul id="buttonGroup">
  	<li class="buttonList">
@@ -901,30 +791,17 @@
  	</li>  	
  </ul>
  
- <!-- 
- <div class="form-group">
-      <label class="col-sm-12">File upload</label>
-      <div class="col-sm-12">
-      	<div class="fileinput fileinput-new input-group" data-provides="fileinput">
-      		<div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-      		<span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
-      		<input type="file" name="...">
-      		</span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a> 
-        </div>
-      </div>
- </div>
- -->
- 
- 
  <form name="noteWriteFrm" enctype="multipart/form-data" class="form-horizontal" style="margin-top:20px;"> 
  
       <table id="table">
          
          <tr>
             <th width="14%" style="background-color: #526875; ">받는사람</th>
-            <td width="96%">
+            <td width="96%" data-toggle="tooltip" data-placement="top" title="주소록을 이용해서 선택해주세요!">
                <c:if test="${not empty noteTempvo}">
-               		<input type="text" name="fk_emp_no_receive" id="fk_emp_no_receive" value="${noteTempvo.fk_emp_no_receive}"  style="width:89%; margin-left:10px; margin-right: 1%; border-radius:3px; border: 1px solid #adb5bd; " />
+               		<input type="text" name="fk_emp_no_receive" id="fk_emp_no_receive" value="${noteTempvo.fk_emp_no_receive}" 
+               			   style="width:89%; margin-left:10px; margin-right: 1%; border-radius:3px; border: 1px solid #adb5bd;"
+               		/>
                		<%-- 주소록 모달 불러오기  --%>
                		<button type="button" id="empList" class="btn btn-primary" style="background-color:#397294; border: 0px;" data-toggle="modal" data-target="#findEmpListModal"> 주소록</button>
                		
@@ -932,7 +809,9 @@
                </c:if>	
                
                <c:if test="${empty noteTempvo}">
-               		<input type="text" name="fk_emp_no_receive" id="fk_emp_no_receive" style="width:89%; margin-left:10px; margin-right: 1%; border-radius:3px; border: 1px solid #adb5bd; " />
+               		<input type="text" name="fk_emp_no_receive" id="fk_emp_no_receive" 
+               			   style="width:89%; margin-left:10px; margin-right: 1%; border-radius:3px; border: 1px solid #adb5bd;" 
+               	    />
                		<%-- 주소록 모달 불러오기  --%>
                		<button type="button" id="empList" class="btn btn-primary" style="background-color:#397294; border: 0px;" data-toggle="modal" data-target="#findEmpListModal"> 주소록</button>
                		<input type="hidden" name="fk_emp_name" id="fk_emp_no_receive_name"> 
@@ -957,11 +836,11 @@
             </th>
             <td width="96%">
                <c:if test="${not empty noteTempvo}">
-               		<input type="text" name="note_title" id="note_title"  value="${noteTempvo.note_title}" style="width:97%; margin-left:10px; margin-top: 3px; margin-bottom: 3px; border-radius:3px; border: 1px solid #adb5bd;" />
+               		<input type="text" name="note_title" id="note_title"  value="${noteTempvo.note_title}" style="width:89%; margin-left:10px; margin-top: 3px; margin-bottom: 3px; border-radius:3px; border: 1px solid #adb5bd;" />
                </c:if>	            
                
                <c:if test="${empty noteTempvo}">
-               		<input type="text" name="note_title" id="note_title" style="width:97%; margin-left:10px; margin-top: 3px; margin-bottom: 3px; border-radius:3px; border: 1px solid #adb5bd;" />
+               		<input type="text" name="note_title" id="note_title" style="width:89%; margin-left:10px; margin-top: 3px; margin-bottom: 3px; border-radius:3px; border: 1px solid #adb5bd;"/>
                </c:if>       
             </td>
          </tr>
@@ -988,8 +867,6 @@
 	               		<input type="hidden" name="note_filename" id="note_filename" value="${noteTempvo.note_filename}" />
 	               		<input type="hidden" name="note_orgfilename" id="note_orgfilename"  value="${noteTempvo.note_orgfilename}" />
 	               		<input type="hidden" name="note_filesize" id="note_filesize" value="${noteTempvo.note_filesize}" />
-	               		
-	               		
 	               </c:if>	   
             	   
             	   <c:if test="${empty noteTempvo || noteTempvo.note_filename == null}">
@@ -1003,19 +880,10 @@
          </tr>   
                 
       </table>
-      <!-- 
-         <tr>
-            <th width="13%">내용</th> 
-            <td>
-               <textarea rows="20" cols="100" style="width: 97%; height: 412px; margin-left:10px;" name="note_content" id="note_content"></textarea>       
-            </td>
-         </tr>
-       -->
        
        <br>
        
        <%-- 쪽지 내용 --%>
-       
        <table style="border: 0; width:1175px;">
          <tr style="border: 0;">
             <td width="1230px;" style="border: 0;">
@@ -1081,19 +949,7 @@
 					
 					<div class="content_layout_address" style="margin-left : 60px;">
 						<div id="tabArea" style="margin-left : -40px;">
-							<ul class="tab_nav nav_layer" style="margin-bottom: 22px;">
-								<%--
-								<li value="user">
-									<a>개인 주소록</a>
-								</li>
-								<li value="company">
-									<a>공용 주소록</a>
-								</li>
-								<li value="org">
-									<a>조직도</a>
-								</li>
-								 --%>
-							</ul>
+							<ul class="tab_nav nav_layer" style="margin-bottom: 22px;"></ul>
 						</div>
 						 
 						 <!-- -1px -->
@@ -1108,20 +964,7 @@
 							                	<a href="#">오성그룹</a>			
 							                    <ul>
 							                        <li class="orgName" style="width:120px;" value="1">전략기획팀</li>
-							                        
-							                        <li class="orgName" style="width:120px;" value="2">경영지원팀
-							                            <%-- 
-							                            <ul>
-							                                <li style="width:120px;">Reports
-							                                    <ul>
-							                                        <li>Report1</li>
-							                                        <li>Report2</li>
-							                                        <li>Report3</li>
-							                                    </ul>
-							                                </li>
-							                            </ul>
-							                            --%>
-							                        </li>
+							                        <li class="orgName" style="width:120px;" value="2">경영지원팀</li>
 							                        <li class="orgName" value="3">인사팀</li>
 							                        <li class="orgName" value="4">회계팀</li>
 							                        <li class="orgName" value="5">영업팀</li>
@@ -1158,30 +1001,7 @@
 									    </tr>
 									</thead>
 				
-									<tbody style="height: 300px; " id="empListTbody">
-									   <%-- test Data 
-									   <c:forEach begin="0" end="10" varStatus="loop">
-					                        <tr style="height: 20px;">
-					                            <td style="width: 40px; height: 10px; padding-left:2px;"> 
-					                            	<input type="checkbox" class="check${loop.index}">
-					                            </td>
-					                            <td style="width: 80px; height: 10px; padding-left:2px;" class="name">
-					                            	bts
-					                            </td>
-					                            <td style="width: 50px; height: 10px; padding-left:2px;" class="postion">
-					                            	사원	
-					                            </td>
-					                            <td style="width: 80px; height: 10px; padding-left:2px;" class="dept">
-					                            	IT
-					                            </td>
-					                            <td style="width: 120px; height: 10px; padding-left:2px;" class="userid">
-					                            	20121204
-					                            </td>
-					                        </tr>                    		
-				                    	</c:forEach>
-				                        --%>
-				                       
-				                       
+									<tbody style="height: 300px; " id="empListTbody">				                       
 									   <c:forEach var="emp" items="${empAllList}" varStatus="status">
 					                        <tr style="height: 20px;" id="empRow" class="${status.index}">
 					                            <td style="width: 40px; height: 10px; padding-left:2px;"> 
@@ -1250,7 +1070,6 @@
 					
 				</div>
 				
-			
 				
 				</div>
 				</div>
@@ -1343,5 +1162,3 @@
 
  </div>
 </div>
-
-
