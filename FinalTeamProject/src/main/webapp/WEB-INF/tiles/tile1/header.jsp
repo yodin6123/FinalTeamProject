@@ -73,8 +73,11 @@ body.go_skin_home_w.go_skin_advanced .go_footer {
 }
 </style>
 
+
+
 <%-- 지은 추가한 부분 시작--%>
 <script src="<%= request.getContextPath()%>/resources/plugins/bower_components/jquery/dist/jquery.min.js"></script>	
+
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -115,13 +118,10 @@ body.go_skin_home_w.go_skin_advanced .go_footer {
             	<a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse">
             		<i class="fa fa-bars"></i>
             	</a>
-                <div class="top-left-part">
-                	<a class="logo" href="index.html">
-                		<b><img src="../plugins/images/pixeladmin-logo.png" alt="home" /></b>
-                		<span class="hidden-xs">
-                			<img src="../plugins/images/pixeladmin-text.png" alt="home" />
-                		</span>
-                	</a>
+                <div class="top-left-part" style="text-align: center; height: 60px;">
+                	<a class="logo" href="<%= ctxPath%>/login.os" >
+                		<img src="<%= ctxPath%>/resources/images/osunglogo.png" width="150px" alt="home" />
+                	</a>	
                 </div>
                 <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
                 	<!-- <li class="navbar-liStyle">
@@ -202,29 +202,39 @@ body.go_skin_home_w.go_skin_advanced .go_footer {
                         </ul>
                     </li>
                     <%-- 용진 header 추가 끝 --%>
-                    <%-- 호연 header 추가 시작 --%>
+                     <%-- 호연 header 추가 시작 --%>
                     <li>
                         <a href="map-google.html" class="waves-effect">
-                        	<i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                        	<i class="fa fa-list fa-fw" aria-hidden="true"></i>
                         	<span class="hide-menu">게시글</span>
-							<span class="fa arrow"></span>
+                        	<span class="fa arrow"></span>
                         </a>
-						<ul class="nav nav-third-level">
-	                        <li><a href="/groupware/noticeList.os">공지게시판</a></li>
-	                        <li><a href="/groupware/boardList.os">일반게시판</a></li>
-	                      
-							<li><a href="/groupware/boardList.os" value="1">전략기획</a></li>
-							<li><a href="/groupware/boardList.os" value="2">경영지원</a></li>
-							<li><a href="/groupware/boardList.os" value="3">인사</a></li>
-							<li><a href="/groupware/boardList.os" value="4">회계</a></li>
-							<li><a href="/groupware/boardList.os" value="5">영업</a></li>
-							<li><a href="/groupware/boardList.os" value="6">마케팅</a></li>
-							<li><a href="/groupware/boardList.os" value="7">IT</a></li>
-	                         
-							<li><a href="/groupware/fileBoardList.os">자료실</a></li>
-						</ul>
+                         <ul class="nav nav-third-level">
+                        <li><a href="/groupware/noticeList.os">공지게시판</a></li>
+                        
+                        <li>
+                        <a href="map-google.html" class="waves-effect"> <i aria-hidden="true"></i>
+                        <span id="boardList" class="hide-menu">일반 게시판</span>
+                        <span class="fa arrow"></span>
+                        </a>
+
+                         <ul class="nav nav-third-level">
+                         <li><a href="/groupware/boardList.os?fk_dept_no=1">전략기획</a></li>
+                         <li><a href="/groupware/boardList.os?fk_dept_no=2">경영지원</a></li>
+                         <li><a href="/groupware/boardList.os?fk_dept_no=3">인사</a></li>
+                         <li><a href="/groupware/boardList.os?fk_dept_no=4">회계</a></li>
+                         <li><a href="/groupware/boardList.os?fk_dept_no=5">영업</a></li>
+                         <li><a href="/groupware/boardList.os?fk_dept_no=6">마케팅</a></li>
+                         <li><a href="/groupware/boardList.os?fk_dept_no=7">IT</a></li>   
+                 
+                       </ul>
+                        </li>
+                   
+                        <li><a href="/groupware/fileBoardList.os">자료실</a></li>
+            
+                        </ul>
                     </li>
-                    <%-- 호연 header 추가 시작 끝 --%>
+                     <%-- 호연 header 추가 시작 끝--%>
                     <%-- 김민아 시작 --%>
                     <li>
                         <a href="/groupware/elecapproval/main.os" class="waves-effect" id="elecapproval">
@@ -252,14 +262,15 @@ body.go_skin_home_w.go_skin_advanced .go_footer {
 	                        <li><a href="/groupware/attendance/waiting.os">승인대기중</a></li>
 	                        <li><a href="/groupware/attendance/processing.os">진행중문서</a></li>
 	                        <li><a href="/groupware/attendance/finished.os">완료문서</a></li>
+	                        <li><a href="/groupware/attendance/worktime.os">출퇴근현황</a></li>
                         </ul>                  
                     </li> 
                     <%-- 김민아 끝 --%>
                     <%-- 수빈 header 시작 --%>
                     <li>
                         <a href="<%= request.getContextPath() %>/goTodo.os" class="waves-effect">
-	                        <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
-	                        <span class="hide-menu">ToDo+</span>
+                           <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
+                           <span class="hide-menu">ToDo+</span>
                         </a>
                     </li>
                     <li>
@@ -269,8 +280,8 @@ body.go_skin_home_w.go_skin_advanced .go_footer {
                            <span class="fa arrow"></span>
                         </a>                     
                         <ul class="nav nav-third-level">
-	                        <li><a href="<%= request.getContextPath() %>/goCalendar.os">캘린더</a></li>
-	                        <li><a href="<%= request.getContextPath() %>/editCal.os">내 캘린더 관리</a></li>
+                           <li><a href="<%= request.getContextPath() %>/goCalendar.os">캘린더</a></li>
+                           <li><a href="<%= request.getContextPath() %>/editCal.os">내 캘린더 관리</a></li>
                         </ul>
                     </li>
                     <li>
@@ -280,8 +291,8 @@ body.go_skin_home_w.go_skin_advanced .go_footer {
                            <span class="fa arrow"></span>
                         </a>                     
                         <ul class="nav nav-third-level">
-	                        <li><a href="<%= request.getContextPath() %>/goRoomRsv.os">예약하기</a></li>
-                        	<li><a href="<%= request.getContextPath() %>/goMyRsvList.os">나의 예약 목록</a></li>
+                           <li><a href="<%= request.getContextPath() %>/goRsv.os">예약하기</a></li>
+                           <li><a href="<%= request.getContextPath() %>/goMyRsvList.os">나의 예약 목록</a></li>
                         </ul>
                     </li>
                     <%-- 수빈 header 끝 --%>
